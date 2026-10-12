@@ -1,0 +1,297 @@
+// ACELERA — comportamiento del sitio
+// GSAP + ScrollTrigger se cargan por CDN antes de este archivo; todo aquí
+// tiene un fallback sin animación si no están disponibles (offline, bloqueo
+// de red) o si el visitante pide prefers-reduced-motion.
+
+(function () {
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasGsap = !!(window.gsap && window.ScrollTrigger) && !reduceMotion;
+  if (hasGsap) gsap.registerPlugin(ScrollTrigger);
+
+  // ---------- Entrada de página (fade-in) ----------
+  // La clase js-loading la agrega un script inline en <head> (evita FOUC);
+  // acá simplemente la quitamos un frame después para que la transición
+  // CSS de opacity/transform en body dispare.
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      document.documentElement.classList.remove('js-loading');
+    });
+  });
+
+  // ---------- Transición de salida al navegar entre páginas internas ----------
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a');
+    if (!link) return;
+    if (link.target === '_blank' || link.hasAttribute('download')) return;
+    var href = link.getAttribute('href') || '';
+    if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) return;
+    var url;
+    try { url = new URL(href, window.location.href); } catch (err) { return; }
+    if (url.origin !== window.location.origin) return;
+    if (url.pathname === window.location.pathname && url.search === window.location.search) return;
+
+    e.preventDefault();
+    if (reduceMotion) { window.location.href = url.href; return; }
+    document.documentElement.classList.add('js-leaving');
+    setTimeout(function () { window.location.href = url.href; }, 320);
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // ---------- Nav móvil ----------
+    var toggle = document.querySelector('.nav-toggle');
+    var links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', function () {
+        links.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', String(links.classList.contains('is-open')));
+      });
+    }
+
+    // ---------- Reveals (stagger) ----------
+    // Selectores simples primero (.reveal), luego grupos que se animan en
+    // cascada (grids de tarjetas, el bloque de headline+sub+body del hero).
+    var singleReveals = document.querySelectorAll('.reveal');
+    var staggerGroupSelectors = [
+      '.hero-reveal-section .container > *',
+      '.plans-head > *',
+      '.index-grid > .index-card',
+      '.criteria-grid > .criteria-item',
+      '.pricing-grid > .pricing-card',
+      '.people-grid > .person-card',
+      '.stat-band > .stat-card'
+    ];
+
+    if (hasGsap) {
+      singleReveals.forEach(function (el) {
+        gsap.fromTo(el, { opacity: 0, y: 18 }, {
+          opacity: 1, y: 0, duration: 0.6, ease: 'power1.out',
+          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' }
+        });
+      });
+
+      staggerGroupSelectors.forEach(function (sel) {
+        var items = document.querySelectorAll(sel);
+        if (!items.length) return;
+        gsap.fromTo(items, { opacity: 0, y: 22 }, {
+          opacity: 1, y: 0, duration: 0.55, stagger: 0.08, ease: 'power1.out',
+          delay: parseFloat(items[0].parentElement.getAttribute('data-delay')) || 0,
+          scrollTrigger: { trigger: items[0].closest('section') || items[0].parentElement, start: 'top 80%', toggleActions: 'play none none reverse' }
+        });
+      });
+    } else {
+      singleReveals.forEach(function (el) { el.classList.add('is-visible'); });
+    }
+
+    // ---------- Botones magnéticos (solo los 2 CTA focales del hero) ----------
+    if (hasGsap) {
+      var magneticEls = document.querySelectorAll('.hero .btn');
+      magneticEls.forEach(function (el) {
+        el.classList.add('is-magnetic');
+        var xTo = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'elastic.out(1,0.4)' });
+        var yTo = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'elastic.out(1,0.4)' });
+        el.addEventListener('mousemove', function (e) {
+          var r = el.getBoundingClientRect();
+          xTo((e.clientX - r.left - r.width / 2) * 0.25);
+          yTo((e.clientY - r.top - r.height / 2) * 0.25);
+        });
+        el.addEventListener('mouseleave', function () { xTo(0); yTo(0); });
+      });
+
+      // ---------- Parallax sutil en la imagen del hero ----------
+      document.querySelectorAll('.hero:not(.hero--split) .hero-media').forEach(function (media) {
+        var hero = media.closest('.hero');
+        if (!hero) return;
+        gsap.to(media, {
+          yPercent: 12,
+          ease: 'none',
+          scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true }
+        });
+      });
+    }
+
+    // ---------- Proceso: crossfade de la imagen sticky según el paso visible ----------
+    var processMedia = document.querySelector('.process-media');
+    var mediaLayers = processMedia ? processMedia.querySelectorAll('.process-media-layer') : [];
+    var steps = document.querySelectorAll('.process-step');
+    var activeLayerIndex = 0;
+    var currentProcessImg = mediaLayers.length ? mediaLayers[0].style.backgroundImage : '';
+
+    // Precarga: sin esto la primera vez que cambia el paso, la foto se
+    // descarga recién al asignarla y el crossfade muestra un parpadeo.
+    steps.forEach(function (step) {
+      var src = step.getAttribute('data-media');
+      if (src) { var pre = new Image(); pre.src = src; }
+    });
+
+    function crossfadeProcessImage(url) {
+      if (!mediaLayers.length || !url) return;
+      if (("url(\"" + url + "\")") === currentProcessImg || ("url('" + url + "')") === currentProcessImg) return;
+      var nextIndex = 1 - activeLayerIndex;
+      var nextLayer = mediaLayers[nextIndex];
+      var curLayer = mediaLayers[activeLayerIndex];
+      nextLayer.style.backgroundImage = "url('" + url + "')";
+      void nextLayer.offsetWidth; // fuerza reflow para que la transición arranque desde el estado inicial
+      nextLayer.classList.add('is-active');
+      curLayer.classList.remove('is-active');
+      activeLayerIndex = nextIndex;
+      currentProcessImg = "url('" + url + "')";
+    }
+
+    if (processMedia && steps.length && 'IntersectionObserver' in window) {
+      var stepIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var img = entry.target.getAttribute('data-media');
+            crossfadeProcessImage(img);
+          }
+        });
+      }, { threshold: 0.5, rootMargin: '-20% 0px -20% 0px' });
+      steps.forEach(function (el) { stepIO.observe(el); });
+    }
+
+    // ---------- Contadores animados (.counter[data-target]) ----------
+    var counters = document.querySelectorAll('.counter[data-target]');
+    if (counters.length) {
+      var animateCounter = function (el) {
+        var target = parseFloat(el.getAttribute('data-target'));
+        var duration = 1200;
+        var start = null;
+        var suffix = el.getAttribute('data-suffix') || '';
+        function step(ts) {
+          if (start === null) start = ts;
+          var progress = Math.min((ts - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(target * eased) + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      };
+      if ('IntersectionObserver' in window) {
+        var counterIO = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              animateCounter(entry.target);
+              counterIO.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.6 });
+        counters.forEach(function (el) { counterIO.observe(el); });
+      } else {
+        counters.forEach(function (el) { animateCounter(el); });
+      }
+    }
+
+    // ---------- Acordeón FAQ con altura animada ----------
+    // <details>/<summary> se mantiene por semántica y accesibilidad, pero el
+    // toggle nativo (instantáneo) se reemplaza por una transición de
+    // max-height controlada acá, sincronizando el atributo `open`.
+    document.querySelectorAll('.faq-item').forEach(function (item) {
+      var summary = item.querySelector('summary');
+      var answer = item.querySelector('.faq-answer');
+      if (!summary || !answer) return;
+
+      summary.addEventListener('click', function (e) {
+        e.preventDefault();
+        var isOpen = item.classList.contains('is-open');
+
+        if (isOpen) {
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { answer.style.maxHeight = '0px'; });
+          });
+          item.classList.remove('is-open');
+          setTimeout(function () { item.removeAttribute('open'); }, 360);
+        } else {
+          item.setAttribute('open', '');
+          item.classList.add('is-open');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+          answer.addEventListener('transitionend', function onEnd(ev) {
+            if (ev.propertyName !== 'max-height') return;
+            if (item.classList.contains('is-open')) answer.style.maxHeight = 'none';
+            answer.removeEventListener('transitionend', onEnd);
+          });
+        }
+      });
+    });
+
+    // ---------- Desglose de precios (etapa por etapa) ----------
+    // Cada tarjeta de precio es independiente: abrir una no afecta a las
+    // otras. align-items:start en .pricing-grid (css/styles.css) evita que
+    // el grid estire las tarjetas colapsadas a la altura de la abierta.
+    document.querySelectorAll('.pricing-stages').forEach(function (item) {
+      var summary = item.querySelector('summary');
+      var body = item.querySelector('.pricing-stages-body');
+      if (!summary || !body) return;
+
+      summary.addEventListener('click', function (e) {
+        e.preventDefault();
+        var isOpen = item.classList.contains('is-open');
+
+        if (isOpen) {
+          body.style.maxHeight = body.scrollHeight + 'px';
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { body.style.maxHeight = '0px'; });
+          });
+          item.classList.remove('is-open');
+          setTimeout(function () { item.removeAttribute('open'); }, 400);
+        } else {
+          item.setAttribute('open', '');
+          item.classList.add('is-open');
+          body.style.maxHeight = body.scrollHeight + 'px';
+          body.addEventListener('transitionend', function onEnd(ev) {
+            if (ev.propertyName !== 'max-height') return;
+            if (item.classList.contains('is-open')) body.style.maxHeight = 'none';
+            body.removeEventListener('transitionend', onEnd);
+          });
+        }
+      });
+    });
+
+    // ---------- Formulario de contacto ----------
+    // Envía por AJAX al endpoint de data-endpoint (FormSubmit → correo).
+    // Solo muestra éxito si el servicio confirma; si falla, lo dice.
+    var form = document.getElementById('contact-form');
+    if (form) {
+      var status = document.getElementById('form-status');
+      var submitBtn = form.querySelector('button[type="submit"]');
+      var setStatus = function (msg, kind) {
+        status.textContent = msg;
+        status.classList.remove('is-success', 'is-error');
+        status.classList.add('is-visible', kind);
+      };
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var valid = true;
+        form.querySelectorAll('[required]').forEach(function (field) { if (!field.value.trim()) valid = false; });
+        if (!valid) { setStatus('Por favor completa todos los campos obligatorios.', 'is-error'); return; }
+
+        var data = {};
+        new FormData(form).forEach(function (v, k) { data[k] = v; });
+        if (data._honey) { setStatus('Gracias — recibimos tu información. Te contactaremos pronto.', 'is-success'); form.reset(); return; }
+
+        var endpoint = form.getAttribute('data-endpoint') || '';
+        if (!endpoint || endpoint.indexOf('__EMAIL__') !== -1) {
+          setStatus('El formulario todavía no está configurado. Escríbenos por otro medio.', 'is-error');
+          return;
+        }
+
+        var label = submitBtn ? submitBtn.textContent : '';
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando…'; }
+        fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
+        })
+          .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+          .then(function (res) {
+            if (res.ok && (res.d.success === true || res.d.success === 'true')) {
+              setStatus('Gracias — recibimos tu información. Te contactaremos pronto.', 'is-success');
+              form.reset();
+            } else { throw new Error('send failed'); }
+          })
+          .catch(function () { setStatus('No pudimos enviar tu mensaje. Inténtalo de nuevo en unos minutos.', 'is-error'); })
+          .then(function () { if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = label; } });
+      });
+    }
+  });
+})();
