@@ -41,10 +41,21 @@
     var toggle = document.querySelector('.nav-toggle');
     var links = document.querySelector('.nav-links');
     if (toggle && links) {
-      toggle.addEventListener('click', function () {
-        links.classList.toggle('is-open');
-        toggle.setAttribute('aria-expanded', String(links.classList.contains('is-open')));
+      var mq = window.matchMedia('(max-width: 820px)');
+      var setNav = function (open, restoreFocus) {
+        links.classList.toggle('is-open', open);
+        document.documentElement.classList.toggle('nav-locked', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+        if (!open && restoreFocus) toggle.focus();
+      };
+      toggle.addEventListener('click', function () { setNav(!links.classList.contains('is-open')); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && links.classList.contains('is-open')) setNav(false, true);
       });
+      links.addEventListener('click', function (e) { if (e.target.closest('a')) setNav(false); });
+      var onMq = function () { if (!mq.matches) setNav(false); };
+      if (mq.addEventListener) mq.addEventListener('change', onMq); else mq.addListener(onMq);
     }
 
     // ---------- Reveals (stagger) ----------
