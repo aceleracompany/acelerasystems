@@ -266,7 +266,6 @@ table { border-collapse: collapse; width: 100%; }
     background: var(--bg);
     overflow-y: auto;
     overscroll-behavior: contain;
-    counter-reset: navitem;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -275,10 +274,8 @@ table { border-collapse: collapse; width: 100%; }
   .nav-links li { border-bottom: 1px solid var(--border-soft); opacity: 0; transform: translateY(14px); transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
   .nav-links li:last-child { border-bottom: 0; margin-top: auto; padding-top: 28px; opacity: 0; }
   .nav-links a:not(.nav-cta) { display: flex; align-items: baseline; gap: 14px; min-height: 64px; padding: 14px 0; width: 100%; font-family: var(--font-display); font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-muted); }
-  .nav-links li:not(:last-child) a::before { counter-increment: navitem; content: "0" counter(navitem); font-family: var(--font-text); font-size: 12px; font-weight: 500; letter-spacing: 0; color: var(--text-faint); font-variant-numeric: tabular-nums; }
   .nav-links a:not(.nav-cta)::after { display: none; }
   .nav-links a[aria-current="page"] { color: var(--white); }
-  .nav-links a[aria-current="page"]::before { color: var(--color-accent) !important; }
   .nav-links a:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: 4px; }
   .nav-links .nav-cta { display: flex; align-items: center; justify-content: center; min-height: 56px; width: 100%; font-size: 16px; font-weight: 600; }
   .nav-links.is-open { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 0.3s ease, visibility 0s linear 0s; }
@@ -1008,7 +1005,6 @@ table { border-collapse: collapse; width: 100%; }
 .mv-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .mv-card { position: relative; background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: var(--radius-card-lg); padding: 48px 44px 52px; display: flex; flex-direction: column; gap: 20px; overflow: hidden; transition: border-color 0.3s ease; }
 .mv-card:hover { border-color: var(--border); }
-.mv-index { position: absolute; top: 28px; right: 36px; margin: 0; font-family: var(--font-display); font-size: 64px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; color: rgba(255,255,255,0.06); font-variant-numeric: tabular-nums; }
 .mv-card .mv-title { font-size: clamp(26px, 2.6vw, 38px); line-height: 1.12; text-wrap: balance; }
 .mv-card .mv-text { padding-top: 20px; max-width: 54ch; font-size: 17px; border-top: 1px solid var(--border-soft); margin: 0; }
 .mv-pillars { padding-top: var(--gap-xl); }
@@ -1019,5 +1015,4 @@ table { border-collapse: collapse; width: 100%; }
 @media (max-width: 900px) {
   .mv-cards { grid-template-columns: 1fr; }
   .mv-card { padding: 36px 26px 40px; }
-  .mv-index { top: 22px; right: 24px; font-size: 48px; }
-}
+  }
