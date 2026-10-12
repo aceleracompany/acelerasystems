@@ -248,23 +248,23 @@
     });
 
     // ---------- Formulario de contacto ----------
-    // Envía por AJAX al endpoint de data-endpoint (FormSubmit → correo).
-    // Solo muestra éxito si el servicio confirma; si falla, lo dice.
+    // Envía por AJAX a Web3Forms (data-endpoint) con la clave pública del
+    // input access_key. Solo muestra éxito si el servicio lo confirma. Si falla
+    // o la clave aún no está puesta, ofrece un mailto al correo de
+    // data-fallback-email para que ningún contacto se pierda.
     var form = document.getElementById('contact-form');
     if (form) {
       var status = document.getElementById('form-status');
       var submitBtn = form.querySelector('button[type="submit"]');
+      var fallbackTo = (form.getAttribute('data-fallback-email') || '').trim();
       var setStatus = function (msg, kind) {
         status.textContent = msg;
         status.classList.remove('is-success', 'is-error');
         status.classList.add('is-visible', kind);
       };
-      // Si el envío automático falla, el visitante no se queda sin salida:
-      // se ofrece un mailto con sus datos ya armados (destino = el del endpoint).
-      var showMailFallback = function (data, endpoint) {
-        var to = (endpoint.split('/ajax/')[1] || '').trim();
+      var showMailFallback = function (data) {
         setStatus('No pudimos enviar tu mensaje automáticamente. ', 'is-error');
-        if (!to) return;
+        if (!fallbackTo) return;
         var body = [
           'Nombre: ' + (data.nombre || ''),
           'Concesionario: ' + (data.concesionario || ''),
@@ -275,7 +275,7 @@
           data.mensaje || ''
         ].join('\n');
         var a = document.createElement('a');
-        a.href = 'mailto:' + to + '?subject=' + encodeURIComponent('Nuevo contacto desde acelerasystems.com') + '&body=' + encodeURIComponent(body);
+        a.href = 'mailto:' + fallbackTo + '?subject=' + encodeURIComponent('Nuevo contacto desde acelerasystems.com') + '&body=' + encodeURIComponent(body);
         a.textContent = 'Envíalo por correo con un clic.';
         a.style.textDecoration = 'underline';
         status.appendChild(a);
@@ -288,13 +288,12 @@
 
         var data = {};
         new FormData(form).forEach(function (v, k) { data[k] = v; });
-        if (data._honey) { setStatus('Gracias — recibimos tu información. Te contactaremos pronto.', 'is-success'); form.reset(); return; }
+        if (data.botcheck) { setStatus('Gracias — recibimos tu información. Te contactaremos pronto.', 'is-success'); form.reset(); return; }
 
         var endpoint = form.getAttribute('data-endpoint') || '';
-        if (!endpoint || endpoint.indexOf('__EMAIL__') !== -1) {
-          setStatus('El formulario todavía no está configurado. Escríbenos por otro medio.', 'is-error');
-          return;
-        }
+        if (!endpoint || !data.access_key || data.access_key.indexOf('__') === 0) { showMailFallback(data); return; }
+        data.name = data.nombre;
+        data.message = data.mensaje;
 
         var label = submitBtn ? submitBtn.textContent : '';
         if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando…'; }
@@ -310,7 +309,7 @@
               form.reset();
             } else { throw new Error('send failed'); }
           })
-          .catch(function () { showMailFallback(data, endpoint); })
+          .catch(function () { showMailFallback(data); })
           .then(function () { if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = label; } });
       });
     }

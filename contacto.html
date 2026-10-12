@@ -53,12 +53,11 @@
 
 <section class="section section--black">
   <div class="container" style="max-width: 760px;">
-    <form id="contact-form" novalidate data-endpoint="https://formsubmit.co/ajax/joaquincorderocc@gmail.com">
-      <input type="hidden" name="_subject" value="Nuevo contacto desde acelerasystems.com">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_cc" value="mateotoledoguaman2903@gmail.com">
-      <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;">
+    <form id="contact-form" novalidate data-endpoint="https://api.web3forms.com/submit" data-fallback-email="joaquincorderocc@gmail.com">
+      <input type="hidden" name="access_key" value="__WEB3FORMS_KEY__">
+      <input type="hidden" name="subject" value="Nuevo contacto desde acelerasystems.com">
+      <input type="hidden" name="from_name" value="ACELERA — acelerasystems.com">
+      <input type="checkbox" name="botcheck" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;">
       <div class="form-grid">
         <div class="form-field">
           <label for="nombre">Nombre *</label>
@@ -131,6 +130,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/main.js?v=14"></script>
+<script src="js/main.js?v=15"></script>
 </body>
 </html>
