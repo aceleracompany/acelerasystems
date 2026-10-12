@@ -22,7 +22,7 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="css/styles.css?v=15">
+<link rel="stylesheet" href="css/styles.css?v=16">
 <script>
   if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('js-loading');
@@ -57,44 +57,51 @@
   </div>
 </section>
 
-<section class="section section--black mv-section">
+<section class="section section--black mv-section" aria-label="Visión y misión">
   <div class="container">
-
-    <div class="mv-block">
-      <div class="mv-head reveal">
+    <div class="mv-cards">
+      <article class="mv-card reveal">
+        <p class="mv-index" aria-hidden="true">01</p>
         <p class="eyebrow"><span class="chev">»</span> Visión</p>
         <h2 class="mv-title">Ser la infraestructura de crecimiento comercial de las empresas tradicionales.</h2>
-      </div>
-      <p class="mv-text reveal">Convertir a ACELERA en la infraestructura de crecimiento comercial de las empresas tradicionales de Latinoamérica, ayudándolas a transformar sus operaciones comerciales mediante tecnología, datos y sistemas de adquisición y fidelización de clientes.</p>
-    </div>
-
-    <div class="mv-block">
-      <div class="mv-head reveal">
+        <p class="mv-text">Convertir a ACELERA en la infraestructura de crecimiento comercial de las empresas tradicionales de Latinoamérica, ayudándolas a transformar sus operaciones comerciales mediante tecnología, datos y sistemas de adquisición y fidelización de clientes.</p>
+      </article>
+      <article class="mv-card reveal">
+        <p class="mv-index" aria-hidden="true">02</p>
         <p class="eyebrow"><span class="chev">»</span> Misión</p>
         <h2 class="mv-title">Convertir negocios tradicionales en sistemas comerciales más eficientes, medibles y escalables.</h2>
-      </div>
-      <p class="mv-text reveal">Diseñar e implementar sistemas comerciales que permitan a empresas tradicionales captar, convertir, gestionar y fidelizar clientes de manera más eficiente, integrando estrategia, tecnología, automatización y marketing en un proceso medible y continuo.</p>
+        <p class="mv-text">Diseñar e implementar sistemas comerciales que permitan a empresas tradicionales captar, convertir, gestionar y fidelizar clientes de manera más eficiente, integrando estrategia, tecnología, automatización y marketing en un proceso medible y continuo.</p>
+      </article>
     </div>
+  </div>
+</section>
 
-    <div class="criteria-grid criteria-grid--4" aria-label="Lo que permite el sistema">
+<section class="section mv-pillars" aria-labelledby="pillars-title">
+  <div class="container">
+    <p class="eyebrow reveal"><span class="chev">»</span> Cómo se aplica</p>
+    <h2 class="h2 reveal" id="pillars-title">Cuatro verbos.<br>Un mismo sistema.</h2>
+    <div class="criteria-grid criteria-grid--4">
       <div class="criteria-item">
         <div class="criteria-num">001</div>
-        <div class="criteria-title">Captar</div>
+        <h3 class="criteria-title">Captar</h3>
+        <p class="criteria-desc">Atraer clientes con intención de compra, no solo visitas.</p>
       </div>
       <div class="criteria-item">
         <div class="criteria-num">002</div>
-        <div class="criteria-title">Convertir</div>
+        <h3 class="criteria-title">Convertir</h3>
+        <p class="criteria-desc">Llevar cada contacto a una cita y cada cita a una venta.</p>
       </div>
       <div class="criteria-item">
         <div class="criteria-num">003</div>
-        <div class="criteria-title">Gestionar</div>
+        <h3 class="criteria-title">Gestionar</h3>
+        <p class="criteria-desc">Dar seguimiento ordenado y medible a cada oportunidad.</p>
       </div>
       <div class="criteria-item">
         <div class="criteria-num">004</div>
-        <div class="criteria-title">Fidelizar</div>
+        <h3 class="criteria-title">Fidelizar</h3>
+        <p class="criteria-desc">Mantener la relación para que el cliente vuelva y recomiende.</p>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -103,6 +110,7 @@
     <h2 class="h2">Hablemos de<br>tu negocio.</h2>
     <div class="cta-row">
       <a href="contacto.html" class="btn btn-primary">Agendar una reunión</a>
+      <a href="como-funciona.html" class="btn btn-ghost">Ver cómo funciona</a>
     </div>
   </div>
 </section>
