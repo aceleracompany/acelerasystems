@@ -913,3 +913,63 @@ table { border-collapse: collapse; width: 100%; }
 .legal strong { color: var(--text-primary); font-weight: 600; }
 .legal a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 900px) { .legal-page { padding-top: 32px; padding-bottom: 72px; } }
+
+/* ---------- Buscador de nivel (Cómo funciona) ---------- */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.finder-section { padding-bottom: var(--gap-2xl); }
+.finder-head { align-items: flex-end; gap: 24px 64px; }
+.finder-head .h2 { text-wrap: balance; }
+.finder-sub { max-width: 440px; font-size: 17px; }
+.finder-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 40px 56px; margin-top: var(--gap-xl); align-items: start; }
+.finder-form { display: flex; flex-direction: column; gap: 32px; min-width: 0; }
+.finder-progress { display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--text-muted); }
+.finder-bar { flex: 1; height: 3px; border-radius: 3px; background: var(--border-soft); overflow: hidden; display: block; }
+.finder-bar > span { display: block; height: 100%; width: 0; background: var(--white); transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+.finder-q { border: 0; margin: 0; padding: 0; min-width: 0; }
+.finder-q legend { display: flex; gap: 12px; align-items: baseline; padding: 0; margin-bottom: 14px; font-family: var(--font-display); font-size: 19px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.3; color: var(--white); }
+.finder-q-num { font-size: 12px; font-weight: 500; color: var(--text-faint); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.finder-opts { display: grid; gap: 8px; }
+.finder-opt { position: relative; }
+.finder-radio { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+.finder-opt label { display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 14px 18px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--bg-card); color: var(--text-primary); font-size: 15px; line-height: 1.4; cursor: pointer; transition: border-color 0.2s ease, background-color 0.2s ease; }
+.finder-opt label::before { content: ""; flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--text-faint); transition: border-color 0.2s ease, background 0.2s ease; }
+.finder-opt label:hover { border-color: rgba(255,255,255,0.35); }
+.finder-radio:checked + label { border-color: var(--white); background: #222; }
+.finder-radio:checked + label::before { border-color: var(--white); background: radial-gradient(circle, var(--white) 0 42%, transparent 46%); }
+.finder-radio:focus-visible + label { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.finder-reset { align-self: flex-start; padding: 6px 0; font-size: 14px; color: var(--text-muted); text-decoration: underline; text-underline-offset: 3px; }
+.finder-reset:hover { color: var(--white); }
+.finder-reset:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 4px; }
+
+.finder-result { position: sticky; top: 110px; min-width: 0; }
+.finder-card { background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: var(--radius-card-lg); padding: 32px 30px; min-height: 340px; }
+.finder-card--empty { display: flex; flex-direction: column; justify-content: center; gap: 12px; color: var(--text-muted); font-size: 15px; line-height: 1.5; }
+.finder-card--empty strong { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--white); }
+.finder-levels { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.finder-levels span { padding: 6px 14px; border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: 13px; color: var(--text-faint); }
+.finder-card.is-in { animation: finder-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes finder-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.finder-kicker { font-size: 12px; font-weight: 500; letter-spacing: 0.02em; color: var(--text-faint); margin: 0 0 8px; }
+.finder-level { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-family: var(--font-display); font-size: 32px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; color: var(--white); margin: 0; }
+.finder-badge { padding: 5px 12px; border-radius: var(--radius-pill); background: var(--white); color: var(--ink); font-family: var(--font-text); font-size: 11px; font-weight: 600; letter-spacing: 0; }
+.finder-desc { margin-top: 14px; font-size: 15px; line-height: 1.6; color: var(--text-muted); }
+.finder-price { margin-top: 22px; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.finder-price .amount { font-family: var(--font-display); font-size: 38px; font-weight: 700; letter-spacing: -0.02em; color: var(--white); }
+.finder-price .period { font-size: 14px; color: var(--text-muted); }
+.finder-price .setup { width: 100%; font-size: 13px; color: var(--text-faint); }
+.finder-priority { margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--border-soft); }
+.finder-chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.finder-chips li { padding: 7px 14px; border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--text-primary); }
+.finder-actions { margin-top: 26px; display: flex; align-items: center; gap: 12px 20px; flex-wrap: wrap; }
+.finder-note { margin-top: 18px; font-size: 12px; line-height: 1.5; color: var(--text-faint); }
+
+@media (max-width: 900px) {
+  .finder-grid { grid-template-columns: 1fr; }
+  .finder-result { position: static; }
+  .finder-card { min-height: 0; padding: 26px 22px; }
+  .finder-level { font-size: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .finder-card.is-in { animation: none; }
+  .finder-bar > span, .finder-opt label, .finder-opt label::before { transition: none; }
+}

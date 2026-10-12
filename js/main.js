@@ -252,6 +252,73 @@
     // input access_key. Solo muestra éxito si el servicio lo confirma. Si falla
     // o la clave aún no está puesta, ofrece un mailto al correo de
     // data-fallback-email para que ningún contacto se pierda.
+    /* Buscador de nivel (Cómo funciona) */
+    var finder = document.querySelector('.finder-form');
+    if (finder) {
+      var LEVELS = {
+        core: { name: 'ACELERA Core', price: '$1,400', setup: '+ $900 de setup inicial', desc: 'Lo esencial para dejar de depender de la suerte: posicionamiento, captación y un seguimiento ordenado para que ningún cliente interesado se pierda.' },
+        growth: { name: 'ACELERA Growth', price: '$2,100', setup: '+ $1,400 de setup inicial', desc: 'Ya tienes movimiento. Growth conecta pauta, conversión y automatización para que cada cliente reciba seguimiento sin depender del asesor.', badge: 'El más elegido' },
+        scale: { name: 'ACELERA Scale', price: '$2,800', setup: '+ $1,800 de setup inicial', desc: 'Operación completa con inteligencia de datos: medir, comparar puntos de venta y optimizar el ciclo entero, desde el anuncio hasta la venta.' }
+      };
+      var box = document.getElementById('finder-result-box');
+      var statusEl = document.getElementById('finder-status');
+      var resetBtn = finder.querySelector('.finder-reset');
+      var barFill = finder.querySelector('.finder-bar > span');
+      var progText = document.getElementById('finder-progress-text');
+      var EMPTY = '<div class="finder-card finder-card--empty"><strong>Tu recomendación aparece aquí</strong><span>Responde las tres preguntas y te decimos qué nivel encaja con tu operación actual.</span><div class="finder-levels"><span>Core</span><span>Growth</span><span>Scale</span></div></div>';
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      box.innerHTML = EMPTY;
+
+      var update = function () {
+        var v = {};
+        ['sedes', 'pauta', 'seg'].forEach(function (n) {
+          var c = finder.querySelector('input[name="' + n + '"]:checked');
+          if (c) v[n] = c.value;
+        });
+        var done = Object.keys(v).length;
+        progText.textContent = done + ' de 3 respondidas';
+        barFill.style.width = (done / 3 * 100) + '%';
+        resetBtn.hidden = done === 0;
+        if (done < 3) { box.innerHTML = EMPTY; statusEl.textContent = ''; return; }
+
+        var score = (v.sedes === '2' ? 2 : 0) + (v.pauta === 'si' ? 1 : 0) + (v.seg === 'proceso' ? 2 : v.seg === 'crm' ? 1 : 0);
+        var key = score >= 4 ? 'scale' : score >= 2 ? 'growth' : 'core';
+        var L = LEVELS[key];
+        var chips = [];
+        if (v.pauta === 'no') chips.push('Captación de clientes');
+        if (v.seg === 'whatsapp') chips.push('Seguimiento ordenado');
+        if (v.seg === 'crm') chips.push('Automatizar el seguimiento');
+        if (v.pauta === 'si' && v.seg !== 'proceso') chips.push('Convertir la pauta en citas');
+        if (v.sedes === '2') chips.push('Medir cada punto de venta');
+        if (v.seg === 'proceso') chips.push('Optimizar con datos');
+        var href = 'contacto.html?nivel=' + key;
+        box.innerHTML =
+          '<div class="finder-card' + (reduce ? '' : ' is-in') + '">' +
+          '<p class="finder-kicker">Tu punto de partida</p>' +
+          '<h3 class="finder-level">' + L.name + (L.badge ? '<span class="finder-badge">' + L.badge + '</span>' : '') + '</h3>' +
+          '<p class="finder-desc">' + L.desc + '</p>' +
+          '<div class="finder-price"><span class="amount">' + L.price + '</span><span class="period">/mes</span><span class="setup">' + L.setup + '</span></div>' +
+          '<div class="finder-priority"><p class="finder-kicker">Por dónde empezaríamos</p><ul class="finder-chips">' +
+          chips.map(function (c) { return '<li>' + c + '</li>'; }).join('') + '</ul></div>' +
+          '<div class="finder-actions"><a class="btn btn-primary" href="' + href + '">Hablar de ' + L.name.replace('ACELERA ', '') + '</a>' +
+          '<a class="link-arrow" href="planes.html">Ver qué incluye cada nivel</a></div>' +
+          '<p class="finder-note">Es una orientación, no un compromiso. En la reunión ajustamos el nivel a tu caso real.</p></div>';
+        statusEl.textContent = 'Recomendación: ' + L.name + '.';
+      };
+      finder.addEventListener('change', update);
+      finder.addEventListener('submit', function (e) { e.preventDefault(); });
+      finder.addEventListener('reset', function () { setTimeout(update, 0); });
+    }
+
+    /* Prellenar nivel en contacto desde ?nivel= */
+    var nivelSel = document.getElementById('nivel');
+    if (nivelSel) {
+      try {
+        var q = new URLSearchParams(window.location.search).get('nivel');
+        if (q && /^(core|growth|scale)$/.test(q)) nivelSel.value = q;
+      } catch (err) {}
+    }
+
     var form = document.getElementById('contact-form');
     if (form) {
       var status = document.getElementById('form-status');

@@ -22,7 +22,7 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="css/styles.css?v=13">
+<link rel="stylesheet" href="css/styles.css?v=14">
 <script>
   if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('js-loading');
@@ -152,27 +152,75 @@
   <span class="break-caption">Producción audiovisual — Etapa 01 · Posicionamiento</span>
 </div>
 
-<!-- Diferenciación completa -->
-<section class="section section--black">
+<!-- Buscador de nivel -->
+<section class="section section--black finder-section" aria-labelledby="finder-title">
   <div class="container">
-    <p class="eyebrow"><span class="chev">»</span> Por qué ACELERA</p>
-    <h2 class="h2">Nadie vende lo que pasa<br>entre las etapas.</h2>
-    <p class="body-lg mt-24">Cada tipo de competidor optimiza una métrica local de su propio entregable y se desentiende de lo que pasa después de entregarlo. Ese espacio entre etapas — el traspaso — es lo que ACELERA convierte en el producto.</p>
+    <p class="eyebrow reveal"><span class="chev">»</span> Tu punto de partida</p>
+    <div class="section-head finder-head reveal">
+      <h2 class="h2" id="finder-title">¿Por dónde empezarías?</h2>
+      <p class="body-lg finder-sub">Tres preguntas y te mostramos el nivel que mejor encaja con tu concesionario. No pedimos datos ni envías nada.</p>
+    </div>
 
-    <div class="compare-table-wrap">
-      <table class="compare-table">
-        <thead>
-          <tr><th>Compite con...</th><th>Su métrica de éxito</th><th>La de ACELERA</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Agencia de redes</td><td>Likes, alcance</td><td>Reuniones agendadas</td></tr>
-          <tr><td>Productora audiovisual</td><td>Video entregado</td><td>Video como insumo de la etapa 1, no el producto final</td></tr>
-          <tr><td>Agencia de pauta</td><td>CPC / CPL</td><td>Que el lead entre al CRM, sea contactado y cierre</td></tr>
-          <tr><td>Diseñador web</td><td>Página entregada</td><td>Landing viva, conectada al CRM, ajustada por datos de Inteligencia</td></tr>
-          <tr><td>Consultor</td><td>Diagnóstico y recomendación</td><td>Ejecución y responsabilidad por el resultado</td></tr>
-          <tr><td>Freelancer</td><td>Su tarea puntual</td><td>Ninguna pieza existe sin conexión a las otras cinco</td></tr>
-        </tbody>
-      </table>
+    <div class="finder-grid reveal">
+      <form class="finder-form" novalidate>
+        <div class="finder-progress">
+          <span class="finder-progress-text" id="finder-progress-text">0 de 3 respondidas</span>
+          <span class="finder-bar" aria-hidden="true"><span></span></span>
+        </div>
+
+        <fieldset class="finder-q">
+          <legend><span class="finder-q-num">01</span>¿Cuántos puntos de venta tiene tu concesionario?</legend>
+          <div class="finder-opts">
+            <div class="finder-opt">
+              <input class="finder-radio" type="radio" name="sedes" id="sedes-1" value="1">
+              <label for="sedes-1">Uno</label>
+            </div>
+            <div class="finder-opt">
+              <input class="finder-radio" type="radio" name="sedes" id="sedes-2" value="2">
+              <label for="sedes-2">Dos o más</label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="finder-q">
+          <legend><span class="finder-q-num">02</span>¿Hoy tienes pauta activa para conseguir clientes?</legend>
+          <div class="finder-opts">
+            <div class="finder-opt">
+              <input class="finder-radio" type="radio" name="pauta" id="pauta-no" value="no">
+              <label for="pauta-no">Todavía no</label>
+            </div>
+            <div class="finder-opt">
+              <input class="finder-radio" type="radio" name="pauta" id="pauta-si" value="si">
+              <label for="pauta-si">Sí, ya invierto en anuncios</label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="finder-q">
+          <legend><span class="finder-q-num">03</span>Cuando llega un cliente interesado, ¿qué pasa con él?</legend>
+          <div class="finder-opts">
+            <div class="finder-opt">
+              <input class="finder-radio" type="radio" name="seg" id="seg-whatsapp" value="whatsapp">
+              <label for="seg-whatsapp">Se queda en WhatsApp o en la libreta del asesor</label>
+            </div>
+            <div class="finder-opt">
+              <input class="finder-radio" type="radio" name="seg" id="seg-crm" value="crm">
+              <label for="seg-crm">Está en un CRM, pero cada asesor le da seguimiento a su manera</label>
+            </div>
+            <div class="finder-opt">
+              <input class="finder-radio" type="radio" name="seg" id="seg-proceso" value="proceso">
+              <label for="seg-proceso">Hay un proceso de seguimiento definido y medido</label>
+            </div>
+          </div>
+        </fieldset>
+
+        <button type="reset" class="finder-reset" hidden>Volver a empezar</button>
+      </form>
+
+      <div class="finder-result">
+        <p class="sr-only" role="status" aria-live="polite" id="finder-status"></p>
+        <div id="finder-result-box"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -219,6 +267,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/main.js?v=15"></script>
+<script src="js/main.js?v=16"></script>
 </body>
 </html>
