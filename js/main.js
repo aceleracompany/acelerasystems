@@ -259,6 +259,27 @@
         status.classList.remove('is-success', 'is-error');
         status.classList.add('is-visible', kind);
       };
+      // Si el envío automático falla, el visitante no se queda sin salida:
+      // se ofrece un mailto con sus datos ya armados (destino = el del endpoint).
+      var showMailFallback = function (data, endpoint) {
+        var to = (endpoint.split('/ajax/')[1] || '').trim();
+        setStatus('No pudimos enviar tu mensaje automáticamente. ', 'is-error');
+        if (!to) return;
+        var body = [
+          'Nombre: ' + (data.nombre || ''),
+          'Concesionario: ' + (data.concesionario || ''),
+          'Correo: ' + (data.email || ''),
+          'Teléfono: ' + (data.telefono || ''),
+          'Nivel de interés: ' + (data.nivel || '—'),
+          '',
+          data.mensaje || ''
+        ].join('\n');
+        var a = document.createElement('a');
+        a.href = 'mailto:' + to + '?subject=' + encodeURIComponent('Nuevo contacto desde acelerasystems.com') + '&body=' + encodeURIComponent(body);
+        a.textContent = 'Envíalo por correo con un clic.';
+        a.style.textDecoration = 'underline';
+        status.appendChild(a);
+      };
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var valid = true;
@@ -289,7 +310,7 @@
               form.reset();
             } else { throw new Error('send failed'); }
           })
-          .catch(function () { setStatus('No pudimos enviar tu mensaje. Inténtalo de nuevo en unos minutos.', 'is-error'); })
+          .catch(function () { showMailFallback(data, endpoint); })
           .then(function () { if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = label; } });
       });
     }
