@@ -347,11 +347,23 @@
         a.style.textDecoration = 'underline';
         status.appendChild(a);
       };
+      var checkField = function (field) {
+        var err = document.getElementById(field.id + '-error');
+        var v = field.value.trim();
+        var ok = !!v && (field.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+        field.setAttribute('aria-invalid', ok ? 'false' : 'true');
+        if (err) { err.hidden = ok; if (!ok) err.textContent = err.getAttribute('data-msg'); }
+        return ok;
+      };
+      form.querySelectorAll('[required]').forEach(function (field) {
+        field.addEventListener('blur', function () { if (field.value || field.getAttribute('aria-invalid') === 'true') checkField(field); });
+        field.addEventListener('input', function () { if (field.getAttribute('aria-invalid') === 'true') checkField(field); });
+      });
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        var valid = true;
-        form.querySelectorAll('[required]').forEach(function (field) { if (!field.value.trim()) valid = false; });
-        if (!valid) { setStatus('Por favor completa todos los campos obligatorios.', 'is-error'); return; }
+        var firstBad = null;
+        form.querySelectorAll('[required]').forEach(function (field) { if (!checkField(field) && !firstBad) firstBad = field; });
+        if (firstBad) { setStatus('Revisa los campos marcados para poder enviar.', 'is-error'); firstBad.focus(); return; }
 
         var data = {};
         new FormData(form).forEach(function (v, k) { data[k] = v; });

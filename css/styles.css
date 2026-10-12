@@ -767,19 +767,31 @@ table { border-collapse: collapse; width: 100%; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: var(--gap-xl); }
 .form-field { display: flex; flex-direction: column; gap: 8px; }
 .form-field.full { grid-column: 1 / -1; }
-.form-field label { font-size: 13px; font-weight: var(--font-weight-medium); color: var(--white); }
+.form-field label { font-weight: var(--font-weight-medium); color: var(--white); }
 .form-field input, .form-field select, .form-field textarea {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 14px 16px;
+  min-height: 52px;
   color: var(--white);
-  font-size: 14px;
+  font-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: rgba(255,255,255,0.5); }
+.form-field input:hover, .form-field select:hover, .form-field textarea:hover { border-color: rgba(255,255,255,0.3); }
+.form-field input:focus-visible, .form-field select:focus-visible, .form-field textarea:focus-visible { outline: none; border-color: var(--white); box-shadow: 0 0 0 3px rgba(255,199,48,0.45); }
+.form-field select { appearance: none; -webkit-appearance: none; padding-right: 44px; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23b3b3b3' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 18px center; }
+.form-field label { font-size: 14px; }
+.form-field .req { color: var(--color-accent); }
+.form-field input[aria-invalid="true"] { border-color: #f08a8a; }
+.field-error { margin: 0; font-size: 13px; line-height: 1.4; color: #f7a4a4; }
+.field-hint { margin: 0; font-size: 13px; line-height: 1.4; color: var(--text-faint); }
+.form-actions .btn { min-height: 52px; }
+.form-actions .btn:disabled { opacity: 0.6; cursor: progress; }
+.form-note a { color: var(--text-muted); }
 .form-field textarea { resize: vertical; min-height: 120px; }
 .form-actions { grid-column: 1 / -1; margin-top: 8px; }
-.form-note { font-size: 12px; color: var(--text-faint); margin-top: 12px; }
+.form-note { font-size: 13px; line-height: 1.5; color: var(--text-faint); margin-top: 12px; }
 @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
 .form-status { margin-top: 16px; font-size: 14px; font-weight: var(--font-weight-medium); display: none; }
 .form-status.is-visible { display: block; }

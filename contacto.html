@@ -22,7 +22,7 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="css/styles.css?v=14">
+<link rel="stylesheet" href="css/styles.css?v=15">
 <script>
   if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('js-loading');
@@ -66,20 +66,24 @@
       <input type="checkbox" name="botcheck" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;">
       <div class="form-grid">
         <div class="form-field">
-          <label for="nombre">Nombre *</label>
-          <input type="text" id="nombre" name="nombre" required>
+          <label for="nombre">Nombre <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="nombre" name="nombre" required autocomplete="name" aria-describedby="nombre-error">
+          <p class="field-error" id="nombre-error" data-msg="Escribe tu nombre." hidden></p>
         </div>
         <div class="form-field">
-          <label for="concesionario">Concesionario / patio *</label>
-          <input type="text" id="concesionario" name="concesionario" required>
+          <label for="concesionario">Concesionario / patio <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="concesionario" name="concesionario" required autocomplete="organization" aria-describedby="concesionario-error">
+          <p class="field-error" id="concesionario-error" data-msg="Escribe el nombre de tu concesionario." hidden></p>
         </div>
         <div class="form-field">
-          <label for="email">Correo *</label>
-          <input type="email" id="email" name="email" required>
+          <label for="email">Correo <span class="req" aria-hidden="true">*</span></label>
+          <input type="email" id="email" name="email" required autocomplete="email" inputmode="email" spellcheck="false" aria-describedby="email-error">
+          <p class="field-error" id="email-error" data-msg="Escribe un correo válido, por ejemplo nombre@empresa.com." hidden></p>
         </div>
         <div class="form-field">
-          <label for="telefono">Teléfono / WhatsApp *</label>
-          <input type="tel" id="telefono" name="telefono" required>
+          <label for="telefono">Teléfono / WhatsApp <span class="req" aria-hidden="true">*</span></label>
+          <input type="tel" id="telefono" name="telefono" required autocomplete="tel" inputmode="tel" aria-describedby="telefono-error">
+          <p class="field-error" id="telefono-error" data-msg="Escribe un teléfono o WhatsApp de contacto." hidden></p>
         </div>
         <div class="form-field full">
           <label for="nivel">Nivel de interés</label>
@@ -92,12 +96,13 @@
         </div>
         <div class="form-field full">
           <label for="mensaje">Cuéntanos sobre tu concesionario</label>
-          <textarea id="mensaje" name="mensaje" placeholder="Ej: cuántos vehículos manejas en rotación, si tienes CRM o pauta activa hoy, en qué ciudad/sector estás..."></textarea>
+          <textarea id="mensaje" name="mensaje" aria-describedby="mensaje-hint"></textarea>
+          <p class="field-hint" id="mensaje-hint">Opcional. Por ejemplo: vehículos en rotación, si tienes CRM o pauta activa, ciudad o sector.</p>
         </div>
         <div class="form-actions">
           <button type="submit" class="btn btn-primary">Enviar y agendar reunión</button>
-          <p id="form-status" class="form-status" role="status"></p>
-          <p class="form-note">* Campos obligatorios. Al enviar este formulario aceptas que ACELERA te contacte para coordinar una reunión y que trate tus datos según nuestra <a href="privacidad.html" style="text-decoration:underline;">política de privacidad</a>.</p>
+          <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+          <p class="form-note"><span aria-hidden="true">*</span> Campos obligatorios. Al enviar este formulario aceptas que ACELERA te contacte para coordinar una reunión y que trate tus datos según nuestra <a href="privacidad.html" style="text-decoration:underline;">política de privacidad</a>.</p>
         </div>
       </div>
     </form>
@@ -136,6 +141,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/main.js?v=16"></script>
+<script src="js/main.js?v=17"></script>
 </body>
 </html>
