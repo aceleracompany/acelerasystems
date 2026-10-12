@@ -900,3 +900,16 @@ table { border-collapse: collapse; width: 100%; }
     background: var(--photo-sky-fade), linear-gradient(0deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0) 28%);
   }
 }
+
+/* ---------- Páginas legales ---------- */
+.legal-page { padding-top: 56px; padding-bottom: 96px; }
+.legal-meta { margin-top: 16px; font-size: 14px; color: var(--text-faint); }
+.legal { max-width: 760px; margin-top: var(--gap-lg); }
+.legal h2 { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--white); margin: 44px 0 12px; }
+.legal p, .legal li { font-size: 16px; line-height: 1.7; color: var(--text-muted); }
+.legal p + p { margin-top: 12px; }
+.legal ul { list-style: disc; padding-left: 22px; margin: 12px 0; }
+.legal li + li { margin-top: 6px; }
+.legal strong { color: var(--text-primary); font-weight: 600; }
+.legal a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 900px) { .legal-page { padding-top: 32px; padding-bottom: 72px; } }
