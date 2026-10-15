@@ -263,6 +263,31 @@
     // input access_key. Solo muestra éxito si el servicio lo confirma. Si falla
     // o la clave aún no está puesta, ofrece un mailto al correo de
     // data-fallback-email para que ningún contacto se pierda.
+    /* Video de producción: autoplay mudo solo en pantalla, con pausa manual */
+    var sv = document.getElementById('showcase-video');
+    var svBtn = document.getElementById('showcase-toggle');
+    if (sv && svBtn) {
+      var userPaused = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var syncBtn = function () {
+        svBtn.setAttribute('aria-pressed', String(sv.paused));
+        svBtn.setAttribute('aria-label', sv.paused ? 'Reproducir video' : 'Pausar video');
+      };
+      var tryPlay = function () { var p = sv.play(); if (p && p.catch) p.catch(function () {}); };
+      svBtn.addEventListener('click', function () {
+        if (sv.paused) { userPaused = false; tryPlay(); } else { userPaused = true; sv.pause(); }
+      });
+      sv.addEventListener('play', syncBtn);
+      sv.addEventListener('pause', syncBtn);
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { if (!userPaused) tryPlay(); } else { sv.pause(); }
+          });
+        }, { threshold: 0.35 }).observe(sv);
+      } else if (!userPaused) { tryPlay(); }
+      syncBtn();
+    }
+
     /* Buscador de nivel (Cómo funciona) */
     var finder = document.querySelector('.finder-form');
     if (finder) {

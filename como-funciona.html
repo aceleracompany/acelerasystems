@@ -22,7 +22,7 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="css/styles.css?v=19">
+<link rel="stylesheet" href="css/styles.css?v=21">
 <script>
   if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('js-loading');
@@ -147,10 +147,26 @@
   </div>
 </section>
 
-<!-- Full-bleed break -->
-<div class="break-media" style="background-image:url('images/lotus-trasera-cielo.jpg'); background-position: center 55%;" role="img" aria-label="Auto negro visto desde atrás, estacionado en la calle bajo cielo azul">
-  <span class="break-caption">Producción audiovisual — Etapa 01 · Posicionamiento</span>
-</div>
+<!-- Ejemplo de producción -->
+<section class="section section--black showcase" aria-labelledby="showcase-title">
+  <div class="container showcase-grid">
+    <div class="showcase-copy reveal">
+      <p class="eyebrow"><span class="chev">»</span> Producción audiovisual</p>
+      <h2 class="h2" id="showcase-title">Así se ve un auto bien contado.</h2>
+      <p class="body-lg">Parte de la Etapa 01 es producir el contenido que posiciona a tu concesionario: video vertical pensado para redes, listo para pauta y para que el cliente llegue con ganas de verlo en persona.</p>
+      <p class="showcase-meta">Mercedes-Benz SL500 · Etapa 01 · Posicionamiento</p>
+    </div>
+    <figure class="showcase-video reveal">
+      <video id="showcase-video" muted loop playsinline preload="metadata" poster="images/mercedes-sl500-poster.jpg" aria-label="Video de producción: Mercedes-Benz SL500 negro estacionado entre pinos">
+        <source src="images/mercedes-sl500.mp4" type="video/mp4">
+      </video>
+      <button type="button" class="showcase-toggle" id="showcase-toggle" aria-label="Pausar video" aria-pressed="false">
+        <svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+      </button>
+    </figure>
+  </div>
+</section>
 
 <!-- Buscador de nivel -->
 <section class="section section--black finder-section" aria-labelledby="finder-title">
@@ -267,6 +283,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/main.js?v=18"></script>
+<script src="js/main.js?v=19"></script>
 </body>
 </html>
