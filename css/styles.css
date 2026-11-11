@@ -1103,3 +1103,26 @@ table { border-collapse: collapse; width: 100%; }
   .process-media { aspect-ratio: 1 / 1; }
 }
 @media (prefers-reduced-motion: reduce) { .pp { transition: none; } }
+
+/* ---------- Tarjetas del inicio: mini diagramas en lugar de fotos ---------- */
+.index-card--viz { background: #161616; }
+.index-card--viz::after { display: none; }
+.index-card-viz { position: absolute; left: 26px; right: 26px; top: 26px; bottom: 96px; container-type: inline-size; display: flex; flex-direction: column; gap: 3.2cqw; color: var(--text-primary); overflow: hidden; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.index-card--viz:hover .index-card-viz { transform: translateY(-4px); }
+.index-card-viz > * { font-size: max(12px, 3.1cqw); }
+.index-card-viz .pp-cal i { aspect-ratio: auto; height: 11cqw; }
+.index-card-viz .pp-bars { height: 24cqw; }
+.index-card-viz .pp-kanban { flex: 1; }
+.index-card-viz .pp-kanban i { height: 9cqw; }
+.index-card-viz .pp-kpis div { padding: 2.4cqw 3cqw; }
+.index-card-viz .pp-kpis div::before { content: ""; width: 60%; height: 2.4cqw; min-height: 8px; border-radius: 4px; background: #fff; }
+.index-card-viz .pp-line-chart { height: 20cqw; }
+.index-card-viz .pp-rows { margin-top: 0; }
+.index-card-viz .pp-rows div { grid-template-columns: 22cqw 1fr; }
+.index-card-viz .pp-rows em { display: none; }
+.index-card-viz .pp-crm { margin-top: 0; }
+.index-card-viz .pp-chat p { max-width: 86%; }
+@media (prefers-reduced-motion: reduce) { .index-card-viz { transition: none; } }
+.index-card-viz .pp-crm { padding: 2cqw 3.4cqw; }
+.index-card-viz .pp-chat { gap: 1.8cqw; }
+.index-card-viz .pp-chat p { padding: 2cqw 3cqw; }
