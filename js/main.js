@@ -58,6 +58,20 @@
       if (mq.addEventListener) mq.addEventListener('change', onMq); else mq.addListener(onMq);
     }
 
+    // ---------- Nav en tinta mientras la apertura amarilla lo cubre ----------
+    var introEl = document.querySelector('.brand-intro');
+    if (introEl) {
+      var navTicking = false;
+      var syncNav = function () {
+        navTicking = false;
+        document.body.classList.toggle('nav-on-yellow', window.scrollY < introEl.offsetHeight - 90);
+      };
+      var onNavScroll = function () { if (!navTicking) { navTicking = true; requestAnimationFrame(syncNav); } };
+      syncNav();
+      window.addEventListener('scroll', onNavScroll, { passive: true });
+      window.addEventListener('resize', onNavScroll);
+    }
+
     // ---------- Reveals (stagger) ----------
     // Selectores simples primero (.reveal), luego grupos que se animan en
     // cascada (grids de tarjetas, el bloque de headline+sub+body del hero).
@@ -107,6 +121,23 @@
         });
         el.addEventListener('mouseleave', function () { xTo(0); yTo(0); });
       });
+
+      // ---------- Apertura de marca: entrada animada + panel que sube al hacer scroll ----------
+      var intro = document.querySelector('.brand-intro');
+      if (intro) {
+        var tl = gsap.timeline({ delay: 0.3 });
+        tl.from('.bi-a', { yPercent: 42, duration: 1.4, ease: 'expo.out' })
+          .from('.bi-dot', { scale: 0, transformOrigin: '50% 50%', duration: 0.9, ease: 'back.out(1.8)' }, '-=0.7')
+          .from('.bi-word span', { yPercent: 110, duration: 1.1, ease: 'expo.out' }, '-=1.0')
+          .from('.bi-sub', { opacity: 0, letterSpacing: '0.9em', duration: 1.3, ease: 'expo.out' }, '-=0.85')
+          .from('.bi-cue', { opacity: 0, y: 8, duration: 0.6, ease: 'power2.out' }, '-=0.6');
+        gsap.timeline({
+          scrollTrigger: { trigger: intro, start: 0, end: function () { return '+=' + intro.offsetHeight; }, scrub: true, pin: true, pinSpacing: false, invalidateOnRefresh: true }
+        })
+          .fromTo(intro, { clipPath: 'inset(0% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 100% 0%)', ease: 'none' }, 0)
+          .to('.bi-mark', { yPercent: -16, ease: 'none' }, 0)
+          .to('.bi-wordmark', { y: -70, opacity: 0, ease: 'none' }, 0);
+      }
 
       // ---------- Parallax sutil en la imagen del hero ----------
       document.querySelectorAll('.hero:not(.hero--split) .hero-media').forEach(function (media) {

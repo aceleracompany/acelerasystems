@@ -22,7 +22,7 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="css/styles.css?v=44">
+<link rel="stylesheet" href="css/styles.css?v=48">
 <script>
   if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('js-loading');
@@ -48,9 +48,22 @@
   </nav>
 </div>
 
+<!-- Apertura de marca: "A." animada; al bajar, el panel amarillo sube y revela la portada -->
+<section class="brand-intro" aria-label="ACELERA Growth System">
+  <svg class="bi-mark" viewBox="0 0 1250 1100" aria-hidden="true" focusable="false">
+    <path class="bi-a" fill-rule="evenodd" d="M330 0H670L1000 1100H740L644 780H356L260 1100H0ZM500 300L602 640H398Z"/>
+    <circle class="bi-dot" cx="1135" cy="1000" r="96"/>
+  </svg>
+  <div class="bi-wordmark" aria-hidden="true">
+    <div class="bi-word"><span>ACELERA</span></div>
+    <div class="bi-sub">GROWTH SYSTEM</div>
+  </div>
+  <span class="bi-cue" aria-hidden="true">Desliza<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>
+</section>
+
 <!-- Hero: apertura mínima — solo el eyebrow y los dos CTA -->
-<section class="hero hero--intro hero--photo-top">
-  <div class="hero-media" style="background-image: url('images/porsche-gt3-portada.jpg'); background-position: 58% 52%; --hero-y: 24%;"></div>
+<section class="hero hero--intro hero--photo-top hero--after-intro">
+  <div class="hero-media" style="background-image: url('images/porsche-gt3-portada.jpg'); background-position: 58% 46%; --hero-y: 24%;"></div>
   <div class="hero-inner container">
     <p class="hero-solo">ACELERA · Sistemas de crecimiento comercial</p>
     <div class="cta-row">
@@ -289,6 +302,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/main.js?v=20"></script>
+<script src="js/main.js?v=23"></script>
 </body>
 </html>
