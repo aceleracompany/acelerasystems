@@ -1162,3 +1162,11 @@ table { border-collapse: collapse; width: 100%; }
   .hero--photo-top::after { background: linear-gradient(180deg, rgba(15,15,15,0.55) 0%, rgba(15,15,15,0) 22%); }
   .hero--photo-top { background-color: var(--bg); }
 }
+
+/* Portada de Cómo funciona: foto sin oscurecer de más para conservar nitidez y detalle */
+.hero--photo-top .hero-media { filter: saturate(0.96) contrast(1.02); }
+@media (min-width: 901px) {
+  .hero--split.hero--photo-top .hero-media::after {
+    background: linear-gradient(0deg, rgba(15,15,15,1) 0%, rgba(15,15,15,0.8) 10%, rgba(15,15,15,0.3) 22%, rgba(15,15,15,0) 38%);
+  }
+}
