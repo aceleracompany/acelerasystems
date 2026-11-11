@@ -22,7 +22,7 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="css/styles.css?v=24">
+<link rel="stylesheet" href="css/styles.css?v=25">
 <script>
   if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('js-loading');
@@ -64,13 +64,69 @@
     <h2 class="h2">Ninguna pieza<br>existe sola.</h2>
 
     <div class="process">
-      <div class="process-media">
-        <div class="process-media-layer is-active" style="background-image:url('images/porsche-gt3-trasera.jpg');"></div>
-        <div class="process-media-layer"></div>
+      <div class="process-media" aria-hidden="true">
+        <!-- Vistas ilustrativas: una por etapa -->
+        <div class="pp is-active" data-panel="0">
+          <div class="pp-head"><span>Calendario editorial</span><em>Mes 1</em></div>
+          <div class="pp-cal"><i class=""></i><i class="t1"></i><i class=""></i><i class="t2"></i><i class=""></i><i class="t3"></i><i class=""></i><i class="t2"></i><i class=""></i><i class=""></i><i class="t1"></i><i class=""></i><i class="t3"></i><i class=""></i><i class=""></i><i class="t1"></i><i class=""></i><i class="t2"></i><i class=""></i><i class=""></i><i class="t3"></i><i class=""></i><i class="t2"></i><i class=""></i><i class="t1"></i><i class=""></i><i class=""></i><i class="t2"></i></div>
+          <div class="pp-legend"><span><i class="t1"></i>Video</span><span><i class="t2"></i>Reel</span><span><i class="t3"></i>Historia</span></div>
+          <p class="pp-note">Cada pieza sale del inventario real del concesionario.</p>
+        </div>
+        <div class="pp" data-panel="1">
+          <div class="pp-head"><span>Campañas activas</span><em>Últimos 7 días</em></div>
+          <div class="pp-big"><strong>124</strong><span>leads generados</span></div>
+          <div class="pp-bars"><i style="height:38%"></i><i style="height:52%"></i><i style="height:46%"></i><i style="height:64%"></i><i style="height:58%"></i><i style="height:78%"></i><i style="height:90%"></i></div>
+          <div class="pp-rows">
+            <div><span>Meta Ads</span><b><u style="width:62%"></u></b><em>62%</em></div>
+            <div><span>Google Ads</span><b><u style="width:38%"></u></b><em>38%</em></div>
+          </div>
+        </div>
+        <div class="pp" data-panel="2">
+          <div class="pp-head"><span>Landing page</span><em>Conectada al CRM</em></div>
+          <div class="pp-browser">
+            <div class="pp-url"><i></i><i></i><i></i><span>tuconcesionario.com/ofertas</span></div>
+            <div class="pp-page">
+              <div class="pp-line w60"></div><div class="pp-line w40"></div>
+              <div class="pp-field">Nombre</div><div class="pp-field">WhatsApp</div><div class="pp-field">Vehículo de interés</div>
+              <div class="pp-cta">Quiero una cotización</div>
+            </div>
+          </div>
+          <p class="pp-chip">→ Lead enviado al CRM al instante</p>
+        </div>
+        <div class="pp" data-panel="3">
+          <div class="pp-head"><span>WhatsApp + CRM</span><em>Automático</em></div>
+          <div class="pp-chat">
+            <p class="in">Hola, ¿sigue disponible el SL500?</p>
+            <p class="out">¡Hola! Sí, está disponible. ¿Quieres agendar una visita esta semana?</p>
+            <p class="in">Sí, el jueves en la tarde.</p>
+          </div>
+          <div class="pp-crm"><b>Cliente asignado</b><span>Asesor · seguimiento en 24 h</span></div>
+        </div>
+        <div class="pp" data-panel="4">
+          <div class="pp-head"><span>Embudo de ventas</span><em>Equipo comercial</em></div>
+          <div class="pp-kanban">
+            <div><h4>Nuevo</h4><i></i><i></i><i></i></div>
+            <div><h4>Visita</h4><i></i><i></i></div>
+            <div><h4>Negociación</h4><i></i></div>
+            <div class="won"><h4>Cerrado</h4><i></i></div>
+          </div>
+          <p class="pp-note">Guion y siguiente paso definidos en cada columna.</p>
+        </div>
+        <div class="pp" data-panel="5">
+          <div class="pp-head"><span>Dashboard</span><em>Reporte mensual</em></div>
+          <div class="pp-kpis">
+            <div><strong>124</strong><span>Leads</span></div>
+            <div><strong>38</strong><span>Citas</span></div>
+            <div><strong>9</strong><span>Ventas</span></div>
+          </div>
+          <svg class="pp-line-chart" viewBox="0 0 200 70" preserveAspectRatio="none"><polyline points="0,58 28,50 56,54 84,38 112,42 140,24 170,18 200,8" fill="none" stroke="currentColor" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="pp-chip">↺ Los resultados alimentan Posicionamiento</p>
+        </div>
+        <span class="pp-tag">Vista ilustrativa</span>
       </div>
       <div class="process-steps">
 
-        <div class="process-step" data-media="images/porsche-gt3-trasera.jpg">
+        <div class="process-step" data-panel="0">
           <div class="process-step-num">01 / 06</div>
           <h3 class="process-step-title">Posicionamiento</h3>
           <div class="process-step-service">Producción Audiovisual</div>
@@ -82,7 +138,7 @@
           </ul>
         </div>
 
-        <div class="process-step" data-media="images/porsche-gt4-frente.jpg">
+        <div class="process-step" data-panel="1">
           <div class="process-step-num">02 / 06</div>
           <h3 class="process-step-title">Demanda</h3>
           <div class="process-step-service">Marketing Digital &amp; SEM</div>
@@ -94,7 +150,7 @@
           </ul>
         </div>
 
-        <div class="process-step" data-media="images/lancia-delta-martini.jpg">
+        <div class="process-step" data-panel="2">
           <div class="process-step-num">03 / 06</div>
           <h3 class="process-step-title">Conversión</h3>
           <div class="process-step-service">Landing page</div>
@@ -106,7 +162,7 @@
           </ul>
         </div>
 
-        <div class="process-step" data-media="images/lotus-llanta-detalle.jpg">
+        <div class="process-step" data-panel="3">
           <div class="process-step-num">04 / 06</div>
           <h3 class="process-step-title">Automatización</h3>
           <div class="process-step-service">CRM + WhatsApp</div>
@@ -118,7 +174,7 @@
           </ul>
         </div>
 
-        <div class="process-step" data-media="images/detalle-rueda.jpg">
+        <div class="process-step" data-panel="4">
           <div class="process-step-num">05 / 06</div>
           <h3 class="process-step-title">Venta</h3>
           <div class="process-step-service">Proceso comercial</div>
@@ -130,7 +186,7 @@
           </ul>
         </div>
 
-        <div class="process-step" data-media="images/porsche-gt3-interior.jpg">
+        <div class="process-step" data-panel="5">
           <div class="process-step-num">06 / 06</div>
           <h3 class="process-step-title">Inteligencia</h3>
           <div class="process-step-service">Analytics / tracking</div>
@@ -283,6 +339,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/main.js?v=19"></script>
+<script src="js/main.js?v=20"></script>
 </body>
 </html>

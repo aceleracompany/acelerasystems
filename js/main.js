@@ -120,41 +120,15 @@
       });
     }
 
-    // ---------- Proceso: crossfade de la imagen sticky según el paso visible ----------
-    var processMedia = document.querySelector('.process-media');
-    var mediaLayers = processMedia ? processMedia.querySelectorAll('.process-media-layer') : [];
-    var steps = document.querySelectorAll('.process-step');
-    var activeLayerIndex = 0;
-    var currentProcessImg = mediaLayers.length ? mediaLayers[0].style.backgroundImage : '';
-
-    // Precarga: sin esto la primera vez que cambia el paso, la foto se
-    // descarga recién al asignarla y el crossfade muestra un parpadeo.
-    steps.forEach(function (step) {
-      var src = step.getAttribute('data-media');
-      if (src) { var pre = new Image(); pre.src = src; }
-    });
-
-    function crossfadeProcessImage(url) {
-      if (!mediaLayers.length || !url) return;
-      if (("url(\"" + url + "\")") === currentProcessImg || ("url('" + url + "')") === currentProcessImg) return;
-      var nextIndex = 1 - activeLayerIndex;
-      var nextLayer = mediaLayers[nextIndex];
-      var curLayer = mediaLayers[activeLayerIndex];
-      nextLayer.style.backgroundImage = "url('" + url + "')";
-      void nextLayer.offsetWidth; // fuerza reflow para que la transición arranque desde el estado inicial
-      nextLayer.classList.add('is-active');
-      curLayer.classList.remove('is-active');
-      activeLayerIndex = nextIndex;
-      currentProcessImg = "url('" + url + "')";
-    }
-
-    if (processMedia && steps.length && 'IntersectionObserver' in window) {
+    // ---------- Proceso: la vista ilustrativa sticky cambia según la etapa visible ----------
+    var panels = document.querySelectorAll('.process-media .pp');
+    var steps = document.querySelectorAll('.process-step[data-panel]');
+    if (panels.length && steps.length && 'IntersectionObserver' in window) {
       var stepIO = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            var img = entry.target.getAttribute('data-media');
-            crossfadeProcessImage(img);
-          }
+          if (!entry.isIntersecting) return;
+          var idx = entry.target.getAttribute('data-panel');
+          panels.forEach(function (p) { p.classList.toggle('is-active', p.getAttribute('data-panel') === idx); });
         });
       }, { threshold: 0.5, rootMargin: '-20% 0px -20% 0px' });
       steps.forEach(function (el) { stepIO.observe(el); });
