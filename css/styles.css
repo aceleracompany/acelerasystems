@@ -1296,3 +1296,15 @@ html:not(.nav-locked) body.nav-on-yellow .nav-links a:not(.nav-cta),
 html:not(.nav-locked) body.nav-on-yellow .nav-toggle { color: var(--ink); }
 html:not(.nav-locked) body.nav-on-yellow .nav-cta { background: var(--ink); color: var(--color-accent) !important; }
 html:not(.nav-locked) body.nav-on-yellow .nav-links a[aria-current="page"]::after { background: var(--ink); }
+
+/* Escenario de apertura: con JS (is-staged) la apertura queda encima de la
+   portada y ambas se fijan mientras dura la transición. Sin JS o con
+   movimiento reducido, se apilan normalmente. */
+.intro-stage { position: relative; }
+.intro-stage.is-staged { height: 100vh; height: 100svh; min-height: 520px; margin-top: -92px; overflow: hidden; }
+.intro-stage.is-staged .brand-intro { position: absolute; inset: 0; margin-top: 0; height: 100%; min-height: 0; will-change: opacity, filter; }
+.intro-stage.is-staged .hero { position: absolute; inset: 0; margin-top: 0; min-height: 100%; }
+.intro-stage.is-staged .hero-media { top: 0; height: 100%; will-change: transform, filter; }
+.intro-stage.is-staged .bi-mark { will-change: transform; }
+@media (max-width: 820px) { .intro-stage.is-staged { margin-top: -76px; } }
+@media (max-width: 900px) { .intro-stage.is-staged .hero--photo-top .hero-media { height: 58%; } }

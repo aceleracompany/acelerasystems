@@ -64,7 +64,8 @@
       var navTicking = false;
       var syncNav = function () {
         navTicking = false;
-        document.body.classList.toggle('nav-on-yellow', window.scrollY < introEl.offsetHeight - 90);
+        var staged = introEl.parentElement.classList.contains('is-staged');
+        document.body.classList.toggle('nav-on-yellow', window.scrollY < (staged ? introEl.offsetHeight * 0.85 : introEl.offsetHeight - 90));
       };
       var onNavScroll = function () { if (!navTicking) { navTicking = true; requestAnimationFrame(syncNav); } };
       syncNav();
@@ -122,25 +123,45 @@
         el.addEventListener('mouseleave', function () { xTo(0); yTo(0); });
       });
 
-      // ---------- Apertura de marca: entrada animada + panel que sube al hacer scroll ----------
-      var intro = document.querySelector('.brand-intro');
-      if (intro) {
+      // ---------- Apertura de marca: entrada animada + "zoom a través de la A" al hacer scroll ----------
+      // La apertura y la portada comparten un escenario fijado (pin). Al bajar,
+      // la cámara entra por el hueco de la A, el amarillo se desenfoca y se
+      // disuelve, y la foto del GT3 pasa de desenfocada a nítida.
+      var stage = document.querySelector('.intro-stage');
+      var intro = stage && stage.querySelector('.brand-intro');
+      if (stage && intro) {
+        stage.classList.add('is-staged');
+        var stageHero = stage.querySelector('.hero');
+        var stageMedia = stageHero.querySelector('.hero-media');
+        var stageText = stageHero.querySelectorAll('.hero-inner, .scroll-cue');
+
         var tl = gsap.timeline({ delay: 0.3 });
         tl.from('.bi-a', { yPercent: 42, duration: 1.4, ease: 'expo.out' })
           .from('.bi-dot', { scale: 0, transformOrigin: '50% 50%', duration: 0.9, ease: 'back.out(1.8)' }, '-=0.7')
           .from('.bi-word span', { yPercent: 110, duration: 1.1, ease: 'expo.out' }, '-=1.0')
           .from('.bi-sub', { opacity: 0, letterSpacing: '0.9em', duration: 1.3, ease: 'expo.out' }, '-=0.85')
           .from('.bi-cue', { opacity: 0, y: 8, duration: 0.6, ease: 'power2.out' }, '-=0.6');
+
+        gsap.set(stageMedia, { scale: 1.16, filter: 'blur(18px) saturate(0.96) contrast(1.02) brightness(0.55)' });
+        gsap.set(stageText, { opacity: 0, y: 28 });
+
         gsap.timeline({
-          scrollTrigger: { trigger: intro, start: 0, end: function () { return '+=' + intro.offsetHeight; }, scrub: true, pin: true, pinSpacing: false, invalidateOnRefresh: true }
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            trigger: stage, start: 0,
+            end: function () { return '+=' + Math.round(stage.offsetHeight * 1.3); },
+            scrub: 0.6, pin: true, anticipatePin: 1, invalidateOnRefresh: true
+          }
         })
-          .fromTo(intro, { clipPath: 'inset(0% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 100% 0%)', ease: 'none' }, 0)
-          .to('.bi-mark', { yPercent: -16, ease: 'none' }, 0)
-          .to('.bi-wordmark', { y: -70, opacity: 0, ease: 'none' }, 0);
+          .to('.bi-wordmark', { opacity: 0, y: -40, filter: 'blur(10px)', duration: 0.3 }, 0)
+          .to('.bi-mark', { scale: 7.5, transformOrigin: '40% 46%', ease: 'power2.in', duration: 0.9 }, 0)
+          .to(intro, { opacity: 0, filter: 'blur(16px)', duration: 0.4, ease: 'power1.in' }, 0.5)
+          .to(stageMedia, { scale: 1, filter: 'blur(0px) saturate(0.96) contrast(1.02) brightness(1)', duration: 0.7, ease: 'power2.out' }, 0.4)
+          .to(stageText, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', stagger: 0.05 }, 0.82);
       }
 
       // ---------- Parallax sutil en la imagen del hero ----------
-      document.querySelectorAll('.hero:not(.hero--split) .hero-media').forEach(function (media) {
+      document.querySelectorAll('.hero:not(.hero--split):not(.hero--after-intro) .hero-media').forEach(function (media) {
         var hero = media.closest('.hero');
         if (!hero) return;
         gsap.to(media, {
