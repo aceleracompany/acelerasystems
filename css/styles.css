@@ -321,7 +321,7 @@ table { border-collapse: collapse; width: 100%; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 30%, rgba(10,10,10,0.55) 70%, rgba(10,10,10,0.96) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 30%, rgba(15,15,15,0.55) 70%, rgba(15,15,15,1) 100%),
     linear-gradient(90deg, rgba(0,0,0,0.5) 0%, transparent 40%);
 }
 .hero-inner { position: relative; z-index: 1; padding-bottom: 72px; padding-top: 160px; width: 100%; }
@@ -923,7 +923,7 @@ table { border-collapse: collapse; width: 100%; }
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: var(--photo-sky-fade), linear-gradient(0deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0) 28%);
+    background: var(--photo-sky-fade), linear-gradient(0deg, rgba(15,15,15,1) 0%, rgba(15,15,15,0.85) 12%, rgba(15,15,15,0.4) 26%, rgba(15,15,15,0) 46%);
   }
 }
 
@@ -1126,3 +1126,26 @@ table { border-collapse: collapse; width: 100%; }
 .index-card-viz .pp-crm { padding: 2cqw 3.4cqw; }
 .index-card-viz .pp-chat { gap: 1.8cqw; }
 .index-card-viz .pp-chat p { padding: 2cqw 3cqw; }
+
+/* ---------- Encuadre de fotos: integrar al fondo en vez de cajas duras ---------- */
+.intro-split .intro-media { border-radius: 0; overflow: visible; position: relative; }
+.intro-split .intro-media img {
+  display: block;
+  border-radius: 0 var(--radius-card-lg) var(--radius-card-lg) 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(0deg, transparent 0%, #000 24%), linear-gradient(180deg, transparent 0%, #000 12%);
+  -webkit-mask-composite: source-in, source-in;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 34%), linear-gradient(0deg, transparent 0%, #000 24%), linear-gradient(180deg, transparent 0%, #000 12%);
+  mask-composite: intersect, intersect;
+}
+@media (max-width: 900px) {
+  .intro-split .intro-media img {
+    border-radius: var(--radius-card-lg);
+    -webkit-mask-image: linear-gradient(0deg, transparent 0%, #000 30%);
+    mask-image: linear-gradient(0deg, transparent 0%, #000 30%);
+    -webkit-mask-composite: source-over;
+    mask-composite: add;
+  }
+}
+.showcase-video { box-shadow: 0 50px 120px -40px rgba(255,199,48,0.22), 0 30px 60px -30px rgba(0,0,0,0.8); }
+.showcase-video::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background: linear-gradient(180deg, rgba(15,15,15,0.35) 0%, rgba(15,15,15,0) 22%, rgba(15,15,15,0) 70%, rgba(15,15,15,0.55) 100%); }
+.showcase-toggle { z-index: 2; }
