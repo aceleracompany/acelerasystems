@@ -1170,3 +1170,30 @@ table { border-collapse: collapse; width: 100%; }
     background: linear-gradient(0deg, rgba(15,15,15,1) 0%, rgba(15,15,15,0.8) 10%, rgba(15,15,15,0.3) 22%, rgba(15,15,15,0) 38%);
   }
 }
+
+/* ---------- Portada de inicio con foto vertical ----------
+   La foto es vertical: a pantalla completa se amplía demasiado y el titular
+   cae encima del auto. En escritorio se usa la composición dividida (texto a
+   la izquierda, auto a la derecha a escala natural, fundido con el fondo).
+   En móvil sigue a pantalla completa y centrada. */
+@media (min-width: 901px) {
+  .hero--intro.hero--split { min-height: 92vh; justify-content: flex-start; text-align: left; }
+  .hero--intro.hero--split .hero-inner { align-items: flex-start; }
+  .hero--intro.hero--split .hero-solo { max-width: 600px; font-size: clamp(40px, 4.6vw, 64px); margin-bottom: 36px; }
+  .hero--intro.hero--split .cta-row { justify-content: flex-start; }
+  .hero--intro.hero--split .hero-media {
+    width: min(60vw, 1120px);
+    filter: saturate(0.96) contrast(1.03);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.55) 18%, #000 38%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.55) 18%, #000 38%);
+  }
+  .hero--intro.hero--split .hero-media::after {
+    background:
+      linear-gradient(180deg, rgba(15,15,15,0.7) 0%, rgba(15,15,15,0.2) 16%, rgba(15,15,15,0) 30%),
+      linear-gradient(0deg, rgba(15,15,15,1) 0%, rgba(15,15,15,0.8) 9%, rgba(15,15,15,0.3) 20%, rgba(15,15,15,0) 34%);
+  }
+}
+@media (max-width: 900px) {
+  .hero--intro.hero--photo-top { align-items: flex-end; }
+  .hero--intro.hero--photo-top .hero-inner { padding-bottom: 104px; }
+}
